@@ -85,7 +85,7 @@ class WeiController extends Controller
             // echo $url;
             $response=file_get_contents($url);
 
-//            echo $response;die;
+    //            echo $response;die;
             $arr=json_decode($response,true);
             //var_dump($arr);
             Redis::set($key,$arr['access_token']);
