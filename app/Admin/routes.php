@@ -11,5 +11,5 @@ Route::group([
 ], function (Router $router) {
 
     $router->get('/', 'HomeController@index');
-
+    $router->get('/auth/user', 'WXController@index');
 });

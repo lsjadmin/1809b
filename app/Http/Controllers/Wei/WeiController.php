@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use GuzzleHttp\Client; 
 class WeiController extends Controller
 {
     //
@@ -22,10 +23,10 @@ class WeiController extends Controller
        // echo 'SUCCESS';
         $data = simplexml_load_string($content);
        // var_dump($data);
-//        echo 'ToUserName:'.$data->ToUserName;echo"</br>";//微信号id
-//        echo 'FromUserName:'.$data->FromUserName;echo"</br>";//用户openid
-//        echo 'CreateTime:'.$data->CreateTime;echo"</br>";//时间
-//        echo 'Event:'.$data->Event;echo"</br>";//事件类型
+       // echo 'ToUserName:'.$data->ToUserName;echo"</br>";//微信号id
+       //echo 'FromUserName:'.$data->FromUserName;echo"</br>";//用户openid
+      // echo 'CreateTime:'.$data->CreateTime;echo"</br>";//时间
+       //echo 'Event:'.$data->Event;echo"</br>";//事件类型
         $wx_id=$data->ToUserName;
         $openid=$data->FromUserName;
         $whereOpenid=[
@@ -85,7 +86,7 @@ class WeiController extends Controller
             // echo $url;
             $response=file_get_contents($url);
 
-    //            echo $response;die;
+            //echo $response;die;
             $arr=json_decode($response,true);
             //var_dump($arr);
             Redis::set($key,$arr['access_token']);
@@ -99,7 +100,6 @@ class WeiController extends Controller
         $access_token=$this->success_toke();
         echo $access_token;
     }
-
     //
     public function getUserInfo($openid){
         $a='https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->success_toke().'&openid='.$openid.'&lang=zh_CN';
@@ -107,6 +107,43 @@ class WeiController extends Controller
         $data=file_get_contents($a);
         $u=json_decode($data,true);
         return $u;
+    }
+    //创建公众号菜单
+    public function createMenu(){
+        //url
+        $url='https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->success_toke().'';
+       // echo $url;
+       //接口数据
+       $post_arr=[
+           'button'=>[
+               [
+                   'type'=>'click',
+                   'name'=>'歌曲a',
+                   'key'=>'key_menu_001'
+               ],
+               [
+                'type'=>'click',
+                'name'=>'书法',
+                'key'=>'key_menu_002'
+               ],
+           ]
+        ];
+         $json_str=json_encode($post_arr,JSON_UNESCAPED_UNICODE);
+       //发送请求
+       $client = new Client;
+       $response=$client->request('POST',$url,[
+            'body'=>$json_str
+       ]);
+        //处理响应
+        $res_str=$response->getBody();
+        //echo $res_str;die;
+        $arr=json_decode($res_str);
+        if(($arr->errcode)>0){
+            echo "创建菜单错误";
+        }else{
+            echo "创建菜单成功";
+        }
+
     }
 }
 

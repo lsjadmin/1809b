@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Model\Wx\WxUserModel;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -9,7 +10,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
-class ExampleController extends Controller
+class WXController extends Controller
 {
     use HasResourceActions;
 
@@ -30,7 +31,7 @@ class ExampleController extends Controller
     /**
      * Show interface.
      *
-     * @param mixed   $id
+     * @param mixed $id
      * @param Content $content
      * @return Content
      */
@@ -45,7 +46,7 @@ class ExampleController extends Controller
     /**
      * Edit interface.
      *
-     * @param mixed   $id
+     * @param mixed $id
      * @param Content $content
      * @return Content
      */
@@ -78,11 +79,11 @@ class ExampleController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new YourModel);
+        $grid = new Grid(new WxUserModel);
 
-        $grid->id('ID')->sortable();
-        $grid->created_at('Created at');
-        $grid->updated_at('Updated at');
+        $grid->user_id('user_id');
+        $grid->openid('0penid');
+        $grid->nickname('昵称');
         
         return $grid;
     }
@@ -90,16 +91,14 @@ class ExampleController extends Controller
     /**
      * Make a show builder.
      *
-     * @param mixed   $id
+     * @param mixed $id
      * @return Show
      */
     protected function detail($id)
     {
-        $show = new Show(YourModel::findOrFail($id));
+        $show = new Show(WxUserModel::findOrFail($id));
 
-        $show->id('ID');
-        $show->created_at('Created at');
-        $show->updated_at('Updated at');
+
 
         return $show;
     }
@@ -111,11 +110,9 @@ class ExampleController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new YourModel);
+        $form = new Form(new WxUserModel);
 
-        $form->display('id', 'ID');
-        $form->display('created_at', 'Created At');
-        $form->display('updated_at', 'Updated At');
+
 
         return $form;
     }
