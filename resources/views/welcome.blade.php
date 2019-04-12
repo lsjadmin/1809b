@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    holle fangfanga
+                    holle fangfang
                 </div>
 
                 <div class="links">
