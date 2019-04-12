@@ -27,13 +27,41 @@ class WeiController extends Controller
        //echo 'FromUserName:'.$data->FromUserName;echo"</br>";//用户openid
       // echo 'CreateTime:'.$data->CreateTime;echo"</br>";//时间
        //echo 'Event:'.$data->Event;echo"</br>";//事件类型
-        $wx_id=$data->ToUserName;
+        $MsgType=$data->MsgType;
         $openid=$data->FromUserName;
+        $wx_id=$data->ToUserName;
+        $event=$data->Event;
+        $MediaId=$data->MediaId;
+        $token=$this->success_toke();
+        //把文本存到数据库
+        if($MsgType=='text'){
+            $m_text=$data->Content;
+            $m_time=$data->CreateTime;
+            $message=[
+                'm_text'=>$m_text,
+                'm_time'=>$m_time,
+                'm_openid'=>$openid
+            ];
+            $res=DB::table('wx_message')->insert($message);
+            if($res){
+                echo "成功";
+            }else{
+                echo "失败";
+            }
+            //echo $Content;
+        }else if($MsgType=='image'){
+            $urla="https://api.weixin.qq.com/cgi-bin/media/get?access_token=$token&media_id=$MediaId";
+            //echo $url;die;
+            $img_time=date('Y-d-m H:i:s',time());
+            $img_str=file_get_contents($urla);
+            file_put_contents("/wwwroot/1809a/public/wx_img/$img_time.jpg",$img_str,FILE_APPEND);
+        }
+
         $whereOpenid=[
             'openid'=>$openid
         ];
 
-        $event=$data->Event;
+       
         //print_r($u);die;
         if($event=='subscribe'){
             $userName=DB::table('userwx')->where($whereOpenid)->first();
