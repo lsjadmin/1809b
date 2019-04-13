@@ -66,7 +66,7 @@ class WeiController extends Controller
         <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
         <CreateTime>'.time().'</CreateTime>
         <MsgType><![CDATA[text]]></MsgType>
-       <Content>![[欢迎回来]]</Content>
+       <Content>![[hello word]]</Content>
         </xml>
         ';
         $whereOpenid=[
