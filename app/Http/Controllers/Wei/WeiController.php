@@ -62,7 +62,13 @@ class WeiController extends Controller
             $voice_str=file_get_contents($urlb);
             file_put_contents("/wwwroot/1809a/public/wx_voice/$voice_time.mp3",$voice_str,FILE_APPEND);
         }
-
+        echo '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName>
+        <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
+        <CreateTime>'.time().'</CreateTime>
+        <MsgType><![CDATA[text]]></MsgType>
+       <Content>![[欢迎回来]]</Content>
+        </xml>
+        ';
         $whereOpenid=[
             'openid'=>$openid
         ];
