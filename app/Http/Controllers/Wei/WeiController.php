@@ -33,7 +33,7 @@ class WeiController extends Controller
         $event=$data->Event;
         $MediaId=$data->MediaId;
         $token=$this->success_toke();
-        //把文本存到数据库
+        //把文本存到数据库 ,图片，语音存到数据库
         if($MsgType=='text'){
             $m_text=$data->Content;
             $m_time=$data->CreateTime;
@@ -52,16 +52,21 @@ class WeiController extends Controller
         }else if($MsgType=='image'){
             $urla="https://api.weixin.qq.com/cgi-bin/media/get?access_token=$token&media_id=$MediaId";
             //echo $url;die;
-            $img_time=date('Y-d-m H:i:s',time());
+            $img_time=date('Y-m-d H:i:s',time());
             $img_str=file_get_contents($urla);
             file_put_contents("/wwwroot/1809a/public/wx_img/$img_time.jpg",$img_str,FILE_APPEND);
+        }else if($MsgType=='voice'){
+            $urlb="https://api.weixin.qq.com/cgi-bin/media/get?access_token=$token&media_id=$MediaId";
+            //echo $url;die;
+            $voice_time=date('Y-m-d H:i:s',time());
+            $voice_str=file_get_contents($urlb);
+            file_put_contents("/wwwroot/1809a/public/wx_voice/$voice_time.mp3",$voice_str,FILE_APPEND);
         }
 
         $whereOpenid=[
             'openid'=>$openid
         ];
 
-       
         //print_r($u);die;
         if($event=='subscribe'){
             $userName=DB::table('userwx')->where($whereOpenid)->first();
@@ -124,11 +129,12 @@ class WeiController extends Controller
         return $token;
 
     }
+    //测试
     public function test(){
         $access_token=$this->success_toke();
         echo $access_token;
     }
-    //
+    //获取用户信息
     public function getUserInfo($openid){
         $a='https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->success_toke().'&openid='.$openid.'&lang=zh_CN';
         //echo $a;
