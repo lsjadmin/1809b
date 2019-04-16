@@ -48,12 +48,13 @@ class WeiController extends Controller
                   $arr=json_decode(file_get_contents($url),true);
                     // echo '<pre>';print_r($arr);echo '</pre>';die;
                     if($arr['HeWeather6'][0]['status']=='unknown location'){
-                        echo "<xml><ToUserName><![CDATA['.$openid.']]></ToUserName>
-                        <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
+                        echo "<xml>
+                        <ToUserName><![CDATA['.$openid']]></ToUserName>
+                        <FromUserName><![CDATA['.$wx_id']]></FromUserName>
                         <CreateTime><![CDATA['.time()']]></CreateTime>
                         <MsgType><![CDATA[text]]></MsgType>
-                       <Content>![[hello'没有这个城市a']]</Content>
-                        </xml> ";die;
+                        <Content><![CDATA['没有这个城市']]></Content>
+                      </xml> ";die;
                     }
                    $tmp=$arr['HeWeather6'][0]['now']['tmp'];//温度
                    $wind_dir=$arr['HeWeather6'][0]['now']['wind_dir'];//风向
