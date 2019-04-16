@@ -52,7 +52,7 @@ class WeiController extends Controller
                         <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
                         <CreateTime><![CDATA['.time()']]></CreateTime>
                         <MsgType><![CDATA[text]]></MsgType>
-                       <Content>![[hello'没有这个城市']]</Content>
+                       <Content>![[hello'没有这个城市a']]</Content>
                         </xml> ";die;
                     }
                    $tmp=$arr['HeWeather6'][0]['now']['tmp'];//温度
