@@ -6,8 +6,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Cache;
+
 use Illuminate\Support\Facades\DB;
-use GuzzleHttp\Client; 
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Uri;
+use Illuminate\Support\Facades\Storage;
 class WeiController extends Controller
 {
     //
@@ -36,6 +39,43 @@ class WeiController extends Controller
         //把文本存到数据库 ,图片，语音存到数据库
         if($MsgType=='text'){
             $m_text=$data->Content;
+                //获取天气
+                if(strpos($m_text,'+天气')){
+                   //获取城市
+                   $city=explode('+',$m_text)[0];
+                  // echo $city; 
+                   $url='https://free-api.heweather.net/s6/weather/now?key=HE1904161021221925&location='.$city;
+                  $arr=json_decode(file_get_contents($url),true);
+                    // echo '<pre>';print_r($arr);echo '</pre>';die;
+                    if($arr['HeWeather6'][0]['status']=='unknown location'){
+                        echo "<xml><ToUserName><![CDATA['.$openid.']]></ToUserName>
+                        <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
+                        <CreateTime><![CDATA['.time()']]></CreateTime>
+                        <MsgType><![CDATA[text]]></MsgType>
+                       <Content>![[hello'没有这个城市']]</Content>
+                        </xml> ";die;
+                    }
+                   $tmp=$arr['HeWeather6'][0]['now']['tmp'];//温度
+                   $wind_dir=$arr['HeWeather6'][0]['now']['wind_dir'];//风向
+                   $wind_sc=$arr['HeWeather6'][0]['now']['wind_sc'];//风力
+                   $hum=$arr['HeWeather6'][0]['now']['hum'];//湿度
+                   $str="温度: ".$tmp."\n"."风向：".$wind_dir."\n"."风力： ".$wind_sc."\n"."湿度".$hum."\n";
+                   //echo $str;
+                   if($arr['HeWeather6'][0]['status']=="ok"){
+                    echo "<xml><ToUserName><![CDATA['.$openid.']]></ToUserName>
+                    <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
+                    <CreateTime><![CDATA['.time()']]></CreateTime>
+                    <MsgType><![CDATA[text]]></MsgType>
+                   <Content>![[hello'.$str']]</Content>
+                    </xml> ";
+                   
+                   }
+                }
+              
+
+
+
+           
             $m_time=$data->CreateTime;
             $message=[
                 'm_text'=>$m_text,
@@ -50,25 +90,65 @@ class WeiController extends Controller
             }
             //echo $Content;
         }else if($MsgType=='image'){
-            $urla="https://api.weixin.qq.com/cgi-bin/media/get?access_token=$token&media_id=$MediaId";
+           // echo "a";
+           $urla="https://api.weixin.qq.com/cgi-bin/media/get?access_token=$token&media_id=$MediaId";
             //echo $url;die;
-            $img_time=date('Y-m-d H:i:s',time());
-            $img_str=file_get_contents($urla);
-            file_put_contents("/wwwroot/1809a/public/wx_img/$img_time.jpg",$img_str,FILE_APPEND);
+            $client = new Client;
+            $response=$client->get(new Uri($urla));
+           // var_dump($response);die;
+           $header=$response->getHeaders();//获取响应头信息
+         // print_r($header);die;
+          $file_info=$header['Content-disposition'][0];
+          //echo $file_info;die;
+          $file_name=rtrim(substr($file_info,-20),'""');
+             // echo $file_name;die;
+             $new_file='weixin/'.substr(md5(time().mt_rand()),10,8).'_'.$file_name;
+         //echo $new_file;die;
+            $res=Storage::put($new_file,$response->getBody());
+            if($res){
+                echo "成功储存图片";
+            }else{          
+                echo "失败储存图片";
+            }
+          
+            $image=[
+                'openid'=>$openid,
+                'image'=>"\1809a\storage\app\weixin".$new_file
+            ];
+           // var_dump($image);die;
+            $arr=DB::table('wx_image')->insert($image);
+            if($arr){
+                echo "ok保存";
+            }else{
+                echo "保存失败";
+            }
+
         }else if($MsgType=='voice'){
             $urlb="https://api.weixin.qq.com/cgi-bin/media/get?access_token=$token&media_id=$MediaId";
             //echo $url;die;
-            $voice_time=date('Y-m-d H:i:s',time());
             $voice_str=file_get_contents($urlb);
-            file_put_contents("/wwwroot/1809a/public/wx_voice/$voice_time.mp3",$voice_str,FILE_APPEND);
+            $file_name=time().mt_rand(11111,99999).'.amr';
+            file_put_contents("/wwwroot/1809b/public/wx_voice/$file_name",$voice_str,FILE_APPEND);
+           $voice_name="/wwwroot/1809a/public/wx_voice/$file_name";
+           $voice=[
+               'openid'=>$openid,
+               'voice'=>$voice_name
+           ];
+           $arr=DB::table('wx_voice')->insert($voice);
+           if($arr){
+                echo"入库成功，语音";
+           }else{
+            echo"入库失败，语音";
+           }
+        }else if($MsgType=='video'){
+            echo"video";
+            $urlb="https://api.weixin.qq.com/cgi-bin/media/get?access_token=$token&media_id=$MediaId";
+            //echo $url;die;
+            $video_time=date('Y-m-d H:i:s',time());
+            $video_str=file_get_contents($urlb);
+            file_put_contents("/wwwroot/1809a/public/wx_video/$video_time.mp4",$video_str,FILE_APPEND);
         }
-        echo '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName>
-        <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
-        <CreateTime>'.time().'</CreateTime>
-        <MsgType><![CDATA[text]]></MsgType>
-       <Content>![[hello word]]</Content>
-        </xml>
-        ';
+       
         $whereOpenid=[
             'openid'=>$openid
         ];
