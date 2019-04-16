@@ -103,7 +103,7 @@ class WeiController extends Controller
          //echo $new_file;die;
             $res=Storage::put($new_file,$response->getBody());
             if($res){
-                echo "成功储存图片";
+                echo "成功储存图片";  
             }else{          
                 echo "失败储存图片";
             }
@@ -261,6 +261,36 @@ class WeiController extends Controller
             echo "创建菜单成功";
         }
 
+    }
+    //群发方法
+    public function sendMse($openid_arr,$content){
+        $msg=[
+            "touser"=>$openid_arr,
+            "msgtype"=>"text",
+            "text"=>[
+                "content"=>$content
+                 ]
+            ];
+        $data=json_encode($msg,JSON_UNESCAPED_UNICODE);
+        $url='https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token='.$this->success_toke();
+        $client=new Client();
+        $response=$client->request('post',$url,[
+            'body'=>$data
+        ]);
+        return $response->getBody();
+    }
+    //群发
+    public function send(){
+        $where=[
+            'status'=>1
+        ];
+        $arr=DB::table('userwx')->where($where)->get()->toArray();
+        //var_dump($arr);die;
+       $openid_arr=array_column($arr,'openid');
+        // print_r($openid_arr);
+        $content="一次通过";
+        $res=$this->sendMse($openid_arr,$content);
+        echo $res;
     }
 }
 

@@ -24,8 +24,9 @@ Route::get('success_toke','Wei\WeiController@success_toke');
 Route::get('test','Wei\WeiController@test');
 //微信创建菜单
 Route::any('createMenu','Wei\WeiController@createMenu');
-
-
+//测试
 Route::get('a','Wei\WeiController@a');
+//群发
+Route::get('send','Wei\WeiController@send');
 
 
