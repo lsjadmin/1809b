@@ -48,13 +48,13 @@ class WeiController extends Controller
                   $arr=json_decode(file_get_contents($url),true);
                     // echo '<pre>';print_r($arr);echo '</pre>';die;
                     if($arr['HeWeather6'][0]['status']=='unknown location'){
-                        echo "<xml>
-                        <ToUserName><![CDATA['.$openid']]></ToUserName>
-                        <FromUserName><![CDATA['.$wx_id']]></FromUserName>
-                        <CreateTime><![CDATA['.time()']]></CreateTime>
-                        <MsgType><![CDATA[text]]></MsgType>
-                        <Content><![CDATA['没有这个城市']]></Content>
-                      </xml> ";die;
+                        echo '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName>
+                    <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
+                    <CreateTime>'.time().'</CreateTime>
+                    <MsgType><![CDATA[text]]></MsgType>
+                    <Content>['.没有这个城市.']</Content>
+                    </xml>
+                    ';
                     }
                    $tmp=$arr['HeWeather6'][0]['now']['tmp'];//温度
                    $wind_dir=$arr['HeWeather6'][0]['now']['wind_dir'];//风向
@@ -63,12 +63,14 @@ class WeiController extends Controller
                    $str="温度: ".$tmp."\n"."风向：".$wind_dir."\n"."风力： ".$wind_sc."\n"."湿度".$hum."\n";
                    //echo $str;
                    if($arr['HeWeather6'][0]['status']=="ok"){
-                    echo "<xml><ToUserName><![CDATA['.$openid.']]></ToUserName>
+                    echo '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName>
                     <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
-                    <CreateTime><![CDATA['.time()']]></CreateTime>
+                    <CreateTime>'.time().'</CreateTime>
                     <MsgType><![CDATA[text]]></MsgType>
-                   <Content>[[hello'.$str']]</Content>
-                    </xml> ";
+                    <Content>['.$str.']</Content>
+                    </xml>
+                    ';
+
                    
                    }
                 }
