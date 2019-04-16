@@ -66,7 +66,7 @@ class WeiController extends Controller
                     <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
                     <CreateTime><![CDATA['.time()']]></CreateTime>
                     <MsgType><![CDATA[text]]></MsgType>
-                   <Content>![[hello'.$str']]</Content>
+                   <Content>[[hello'.$str']]</Content>
                     </xml> ";
                    
                    }
@@ -84,9 +84,9 @@ class WeiController extends Controller
             ];
             $res=DB::table('wx_message')->insert($message);
             if($res){
-                echo "成功";
+               // echo "成功";
             }else{
-                echo "失败";
+               // echo "失败";
             }
             //echo $Content;
         }else if($MsgType=='image'){
@@ -128,7 +128,7 @@ class WeiController extends Controller
             //echo $url;die;
             $voice_str=file_get_contents($urlb);
             $file_name=time().mt_rand(11111,99999).'.amr';
-            file_put_contents("/wwwroot/1809b/public/wx_voice/$file_name",$voice_str,FILE_APPEND);
+            file_put_contents("/wwwroot/1809a/public/wx_voice/$file_name",$voice_str,FILE_APPEND);
            $voice_name="/wwwroot/1809a/public/wx_voice/$file_name";
            $voice=[
                'openid'=>$openid,
@@ -197,7 +197,7 @@ class WeiController extends Controller
         $token=Redis::get($key);
             //echo $token;die;
         if($token){
-            echo "cache";
+           // echo "cache";
            // return $token;
         }else{
             echo "No cache";
