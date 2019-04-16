@@ -70,15 +70,9 @@ class WeiController extends Controller
                     <Content>['.$str.']</Content>
                     </xml>
                     ';
-
-                   
                    }
                 }
-              
-
-
-
-           
+            //把文字信息存到数据库
             $m_time=$data->CreateTime;
             $message=[
                 'm_text'=>$m_text,
