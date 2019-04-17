@@ -26,7 +26,13 @@ Route::get('test','Wei\WeiController@test');
 Route::any('createMenu','Wei\WeiController@createMenu');
 //测试
 Route::get('a','Wei\WeiController@a');
-//群发 啊
+//群发 
 Route::get('send','Wei\WeiController@send');
+
+
+//微信支付
+Route::get('text','Wei\WeiPayController@text');
+Route::post('notify','Wei\WeiPayController@notify');
+
 
 
