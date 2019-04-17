@@ -288,7 +288,7 @@ class WeiController extends Controller
         //var_dump($arr);die;
        $openid_arr=array_column($arr,'openid');
         // print_r($openid_arr);
-        $content="嗯嗯嗯";
+        $content="啊啊啊";
         $res=$this->sendMse($openid_arr,$content);
         echo $res;
     }

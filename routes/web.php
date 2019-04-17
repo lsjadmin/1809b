@@ -26,7 +26,7 @@ Route::get('test','Wei\WeiController@test');
 Route::any('createMenu','Wei\WeiController@createMenu');
 //测试
 Route::get('a','Wei\WeiController@a');
-//群发
+//群发 啊
 Route::get('send','Wei\WeiController@send');
 
 
