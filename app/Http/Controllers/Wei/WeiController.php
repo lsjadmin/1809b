@@ -77,7 +77,10 @@ class WeiController extends Controller
                      $name=$res->goods_name;
                     $desc=$res->goods_desc;
                     $img=$res->goods_img;
-                 
+                    // echo $name;
+                    // echo $desc;
+                    // echo $img;
+                    // die;
                     echo '<xml>
                     <ToUserName><![CDATA['.$openid.']]></ToUserName>
                     <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
