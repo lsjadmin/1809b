@@ -327,5 +327,46 @@ class WeiController extends Controller
        ];
        return view('wei.desc',$data);
     }
+    //签名
+    function ticket(){
+        $access_token=$this->success_toke();
+        $key="ticket";
+        $ticket=Redis::get($key);
+        if($ticket){
+           
+        }else{
+            $url="https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=$access_token&type=jsapi";
+            $responsea=json_decode(file_get_contents($url),true);
+            // return $responsea;
+                Redis::set($key,$responsea['ticket']);
+                Redis::expire($key,3600);
+                $ticket=$responsea['ticket'];
+        }
+        return $ticket;
+    }
+    //
+    public function cong(){
+        $ticket=$this->ticket();
+        //生成签名
+        $nonceStr=Str::random(10);
+       
+        //dd($ticket);   
+        $timestamp=time();
+        $current_url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] .$_SERVER['REQUEST_URI'];
+        //echo($current_url);
+        $string1 = "jsapi_ticket=$ticket&noncestr=$nonceStr&timestamp=$timestamp&url=$current_url";
+        $sign= sha1($string1);
+        $jsconfig=[
+            'appId'=>env('WX_APPID'),   //公众号的唯一标识
+            'timestamp'=>$timestamp,   //生成签名的时间戳
+            'nonceStr'=> $nonceStr,     //生成签名的随机串
+            'signature'=> $sign,   //签名
+        ];
+        $data=[
+            'jsconfig'=>$jsconfig
+        ];
+        //dd($data);
+          return view('wei.desc',$data);   
+    }
 }
                             

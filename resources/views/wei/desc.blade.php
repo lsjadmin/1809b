@@ -76,11 +76,32 @@
                    
                         <li>
                             {{$goodsinfo->goods_id}} >> {{$goodsinfo->goods_name}} >> {{$goodsinfo->goods_price}} >>
-                            <img src="http://uploads.1809.com/uploads/20190318/PvgjsXC74iawT3Ct07p2fNKzzzH3I86RXEzux5qs.jpeg" width="100" height="100" />
+                            <img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2984185296,2196422696&fm=27&gp=0.jpg" width="100" height="100" />
                             <br>
                         </li>
                   
                 </ul>
+                <script src="http://res2.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+                <script src="/js/jquery/jquery-3.1.1.min.js"></script>
+                <script>
+                    wx.config({
+                    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId:"{{$jsconfig['appId']}}", // 必填，公众号的唯一标识
+                    timestamp:"{{$jsconfig['timestamp']}}" , // 必填，生成签名的时间戳
+                    nonceStr: "{{$jsconfig['nonceStr']}}", // 必填，生成签名的随机串
+                    signature: "{{$jsconfig['signature']}}",// 必填，签名
+                    jsApiList: ['chooseImage','uploadImage'] // 必填，需要使用的JS接口列表
+                });
+                    wx.ready(function(){
+                        wx.onMenuShareTimeline({
+                            title: '商品详情', // 分享标题
+                            link:"http://1809lianshijie.comcto.com/desc/{{$goodsinfo->goods_id}}", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                            imgUrl:"https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2984185296,2196422696&fm=27&gp=0.jpg", // 分享图标
+                            success: function () {
+                            // 用户点击了分享后执行的回调函数
+                        },
+                    })
+                </script>
             </div>
         </div>
     </body>
