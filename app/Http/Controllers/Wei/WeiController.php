@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 class WeiController extends Controller
 {
@@ -323,7 +324,8 @@ class WeiController extends Controller
        $goodsinfo=DB::table('goods')->where($where)->first();
        //echo '<pre>';print_r($goodsinfo);echo '</pre>';die;
        $data=[
-           'goodsinfo'=>$goodsinfo
+           'goodsinfo'=>$goodsinfo,
+           'jsconfig'=>$this->cong(),
        ];
        return view('wei.desc',$data);
     }
@@ -345,7 +347,7 @@ class WeiController extends Controller
         return $ticket;
     }
     //
-    public function cong(){
+    function cong(){
         $ticket=$this->ticket();
         //生成签名
         $nonceStr=Str::random(10);
@@ -362,11 +364,9 @@ class WeiController extends Controller
             'nonceStr'=> $nonceStr,     //生成签名的随机串
             'signature'=> $sign,   //签名
         ];
-        $data=[
-            'jsconfig'=>$jsconfig
-        ];
-        //dd($data);
-          return view('wei.desc',$data);   
+       return $jsconfig;
+        //dd($jsconfig);
+         // return view('wei.desc',['jsconfig'=>$jsconfig]);   
     }
 }
                             
