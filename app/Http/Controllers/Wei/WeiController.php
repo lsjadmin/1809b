@@ -327,6 +327,8 @@ class WeiController extends Controller
            'goodsinfo'=>$goodsinfo,
            'jsconfig'=>$this->cong(),
        ];
+    //    $a=$this->cong();
+    //    echo '<pre>';print_r($a);echo'</pre>';
        return view('wei.desc',$data);
     }
     //签名
@@ -355,7 +357,7 @@ class WeiController extends Controller
         //dd($ticket);   
         $timestamp=time();
         $current_url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] .$_SERVER['REQUEST_URI'];
-        //echo($current_url);
+        //echo($current_url);die;
         $string1 = "jsapi_ticket=$ticket&noncestr=$nonceStr&timestamp=$timestamp&url=$current_url";
         $sign= sha1($string1);
         $jsconfig=[
@@ -365,8 +367,6 @@ class WeiController extends Controller
             'signature'=> $sign,   //签名
         ];
        return $jsconfig;
-        //dd($jsconfig);
-         // return view('wei.desc',['jsconfig'=>$jsconfig]);   
     }
 }
                             
