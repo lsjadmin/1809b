@@ -89,7 +89,7 @@ class WeiController extends Controller
                         <Title><![CDATA['.$name.']]></Title>
                         <Description><![CDATA['.$desc.']]></Description>
                         <PicUrl><![CDATA['.'http://img.bimg.126.net/photo/31kQlCGP44-34Q5yxvoqmw==/5770237022569104952.jpg'.']]></PicUrl>
-                        <Url><![CDATA'.'.www.baidu.com'.']]></Url>
+                        <Url><![CDATA'.'www.baidu.com'.']]></Url>
                       </item>
                     </Articles>
                   </xml>';
