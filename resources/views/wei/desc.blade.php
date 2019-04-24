@@ -98,8 +98,9 @@
                                 desc:"商品描述", // 分享描述
                                 link:"{{$jsconfig['current_url']}}", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                                 imgUrl:"https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2984185296,2196422696&fm=27&gp=0.jpg" , // 分享图标
-                                success: function () {
+                                success: function (res) {
                                 // 设置成功
+                                    console.log(res);
                                 }
                             })
                     });
