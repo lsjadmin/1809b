@@ -316,7 +316,7 @@ class WeiController extends Controller
         $res=$this->sendMse($openid_arr,$content);
         echo $res;
     }
-    //商品详情
+    //点击进入商品详情
     public function desc($id){
        $where=[
            'goods_id'=>$id
@@ -328,10 +328,10 @@ class WeiController extends Controller
            'jsconfig'=>$this->cong(),
        ];
     //    $a=$this->cong();
-    //    echo '<pre>';print_r($a);echo'</pre>';
+    //    echo '<pre>';print_r($a);echo'</pre>';die;
        return view('wei.desc',$data);
     }
-    //签名
+    //ticket
     function ticket(){
         $access_token=$this->success_toke();
         $key="ticket";
@@ -365,6 +365,7 @@ class WeiController extends Controller
             'timestamp'=>$timestamp,   //生成签名的时间戳
             'nonceStr'=> $nonceStr,     //生成签名的随机串
             'signature'=> $sign,   //签名
+            'current_url'=>$current_url
         ];
        return $jsconfig;
     }
