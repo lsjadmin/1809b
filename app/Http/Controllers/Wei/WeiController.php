@@ -73,10 +73,12 @@ class WeiController extends Controller
                    }
                 }else if($m_text=='图文消息'){
                     $res=DB::table('goods')->where(['goods_new'=>1])->take(1)->first();
-                    //echo'<pre>';print_r($res);echo'</pre>';
+                    
                      $name=$res->goods_name;
                     $desc=$res->goods_desc;
-                   // $img=$res->goods_img;
+                   $img=$res->goods_img;
+                   $url="http://uploads.1809.com/$img";
+                  
                     echo '<xml>
                     <ToUserName><![CDATA['.$openid.']]></ToUserName>
                     <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
@@ -87,7 +89,7 @@ class WeiController extends Controller
                       <item>
                         <Title><![CDATA['.$name.']]></Title>
                         <Description><![CDATA['.$desc.']]></Description>
-                        <PicUrl><![CDATA['.'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3437789450,2499445022&fm=27&gp=0.jpg'.']]></PicUrl>
+                        <PicUrl><![CDATA['.$url.']]></PicUrl>
                         <Url><![CDATA['.'www.baidu.com'.']]></Url>
                       </item>
                     </Articles>
@@ -314,7 +316,7 @@ class WeiController extends Controller
         $res=$this->sendMse($openid_arr,$content);
         echo $res;
     }
-    //回复图文消息
+    //商品详情
     public function article(){
 
     }
