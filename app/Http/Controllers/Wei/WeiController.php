@@ -71,6 +71,29 @@ class WeiController extends Controller
                     </xml>
                     ';
                    }
+                }else if($m_text=='图文消息'){
+                    //$res=DB::table('goods')->where(['goods_new'=>1])->take(5)->get();
+                    // $res
+                    //  print_r($res);
+                    //  die;
+                    $name="商品信息";
+                    $desc="商品描述";
+                    echo '<xml>
+                    <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                    <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
+                    <CreateTime>'.time().'</CreateTime>
+                    <MsgType><![CDATA[news]]></MsgType>
+                    <ArticleCount>1</ArticleCount>
+                    <Articles>
+                      <item>
+                        <Title><![CDATA['.$name.']]></Title>
+                        <Description><![CDATA['.$desc.']]></Description>
+                        <PicUrl><![CDATA[.http://img.bimg.126.net/photo/31kQlCGP44-34Q5yxvoqmw==/5770237022569104952.jpg.]]></PicUrl>
+                        <Url><![CDATA[.www.baidu.com.]]></Url>
+                      </item>
+                    </Articles>
+                  </xml>';
+                die;
                 }
             //把文字信息存到数据库
             $m_time=$data->CreateTime;
@@ -291,6 +314,10 @@ class WeiController extends Controller
         $content="啊啊啊";
         $res=$this->sendMse($openid_arr,$content);
         echo $res;
+    }
+    //回复图文消息
+    public function article(){
+
     }
 }
                             

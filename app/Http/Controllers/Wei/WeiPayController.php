@@ -14,7 +14,7 @@ class WeiPayController extends Controller
     //微信支付测试
     public function text(){
         $total_fee = 2;         //用户要支付的总金额 1=1分
-        $order_id = time().mt_rand(1111,9999);            //测试订单号 随机生成
+        $order_id = time().'lianshijie'.mt_rand(1111,9999);            //测试订单号 随机生成
         $order_info = [
             'appid'         =>  env('WEIXIN_APPID_0'),      //微信支付绑定的服务号的APPID
             'mch_id'        =>  env('WEIXIN_MCH_ID'),       // 商户ID
