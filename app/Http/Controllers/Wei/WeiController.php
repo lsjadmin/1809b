@@ -72,12 +72,11 @@ class WeiController extends Controller
                     ';
                    }
                 }else if($m_text=='图文消息'){
-                    //$res=DB::table('goods')->where(['goods_new'=>1])->take(5)->get();
-                    // $res
-                    //  print_r($res);
-                    //  die;
-                    $name="商品信息";
-                    $desc="商品描述";
+                    $res=DB::table('goods')->where(['goods_new'=>1])->take(1)->first();
+                    //echo'<pre>';print_r($res);echo'</pre>';
+                     $name=$res->goods_name;
+                    $desc=$res->goods_desc;
+                    $img=$res->goods_img;
                     echo '<xml>
                     <ToUserName><![CDATA['.$openid.']]></ToUserName>
                     <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
@@ -88,7 +87,7 @@ class WeiController extends Controller
                       <item>
                         <Title><![CDATA['.$name.']]></Title>
                         <Description><![CDATA['.$desc.']]></Description>
-                        <PicUrl><![CDATA['.'http://img.bimg.126.net/photo/31kQlCGP44-34Q5yxvoqmw==/5770237022569104952.jpg'.']]></PicUrl>
+                        <PicUrl><![CDATA['.'http://uploads.1809.com/.$img'.']]></PicUrl>
                         <Url><![CDATA['.'www.baidu.com'.']]></Url>
                       </item>
                     </Articles>
