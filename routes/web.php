@@ -32,7 +32,7 @@ Route::get('send','Wei\WeiController@send');
 Route::get('text','Wei\WeiPayController@text');
 Route::post('notify','Wei\WeiPayController@notify');
 //回复图文消息
-Route::any('article','Wei\WeiController@article');
+Route::any('desc/{id}','Wei\WeiController@desc');
 
 
 

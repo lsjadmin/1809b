@@ -73,12 +73,11 @@ class WeiController extends Controller
                    }
                 }else if($m_text=='图文消息'){
                     $res=DB::table('goods')->where(['goods_new'=>1])->take(1)->first();
-                    
                      $name=$res->goods_name;
-                    $desc=$res->goods_desc;
-                   $img=$res->goods_img;
-                   $url="http://uploads.1809.com/$img";
-                  
+                     $desc=$res->goods_desc;
+                     $img=$res->goods_img;
+                    $res=$res->goods_id;
+                    $url="http://1809lianshijie.comcto.com/desc/$res";
                     echo '<xml>
                     <ToUserName><![CDATA['.$openid.']]></ToUserName>
                     <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
@@ -89,8 +88,8 @@ class WeiController extends Controller
                       <item>
                         <Title><![CDATA['.$name.']]></Title>
                         <Description><![CDATA['.$desc.']]></Description>
-                        <PicUrl><![CDATA['.$url.']]></PicUrl>
-                        <Url><![CDATA['.'www.baidu.com'.']]></Url>
+                        <PicUrl><![CDATA['.'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2984185296,2196422696&fm=27&gp=0.jpg'.']]></PicUrl>
+                        <Url><![CDATA['.$url.']]></Url>
                       </item>
                     </Articles>
                   </xml>';
@@ -317,8 +316,16 @@ class WeiController extends Controller
         echo $res;
     }
     //商品详情
-    public function article(){
-
+    public function desc($id){
+       $where=[
+           'goods_id'=>$id
+       ];
+       $goodsinfo=DB::table('goods')->where($where)->first();
+       //echo '<pre>';print_r($goodsinfo);echo '</pre>';die;
+       $data=[
+           'goodsinfo'=>$goodsinfo
+       ];
+       return view('wei.desc',$data);
     }
 }
                             
