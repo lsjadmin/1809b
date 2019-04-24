@@ -76,7 +76,7 @@
                    
                         <li>
                             {{$goodsinfo->goods_id}} >> {{$goodsinfo->goods_name}} >> {{$goodsinfo->goods_price}} >>
-                            <img src="http://uploads.1809.com/{{$goodsinfo->goods_img}}" width="100" height="100" />
+                            <img src="http://uploads.1809.com/uploads/20190318/PvgjsXC74iawT3Ct07p2fNKzzzH3I86RXEzux5qs.jpeg" width="100" height="100" />
                             <br>
                         </li>
                   
